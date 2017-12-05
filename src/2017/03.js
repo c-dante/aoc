@@ -20,7 +20,50 @@ const rangeAtEdge = edge => edge === 1 ? [1,1] : [edge*edge - (2*edge + 2*(edge-
 // Assuming 1 is at (0, 0), and the lower-right corner of the first ring is at (1, 1), we know
 // the lower-right corner for any ring is: (ring# - 1, ring# - 1), by our own def
 
-// @todo: given a number, determine its ring index location
-// @todo: given a number within a ring, determine its distance from the closest center point (doesn't matter)
-// @todo: The distance from the center (steps to get to the end) is just distance to center of ring number
-//
+// Given a number, search for the ring that contains it
+const findRingSize = n => {
+	if (n <= 0) return undefined;
+	let ring = 0;
+	let range = [];
+	do {
+		ring++;
+		range = rangeAtEdge(ringeToEdgeSize(ring));
+	} while (n < range[0] || n > range[1]);
+
+	return { ring, range };
+};
+
+// Given a ring, return the "centers" of the ring
+const centersOfRing = (ring) => {
+	const edgeSize = ringeToEdgeSize(ring);
+	const range = rangeAtEdge(edgeSize);
+	// Lower right corner = end of ring, calc back by floor edge / 2
+	const halfBack = Math.floor(edgeSize/2);
+	const bottom = range[1] - halfBack;
+	const edgeSizeObo = edgeSize - 1;
+	return [
+		bottom - 3*edgeSizeObo, // right
+		bottom - 2*edgeSizeObo, // top
+		bottom - edgeSizeObo, // left
+		bottom, // bottom
+	];
+};
+
+// Now the rest:
+// Given a number:
+const go = (n) => {
+	// 1. find its ring
+	const { ring } = findRingSize(n);
+	
+	// 2. get that ring's centers
+	const centers = centersOfRing(ring);
+	
+	// 3. get the distance to the closest center
+	const distToCenter = centers.reduce(
+		(minD, center) => Math.min(minD, Math.abs(n - center)),
+		Number.POSITIVE_INFINITY
+	);
+	
+	// 4. distance to the middle is that + ring #
+	return (ring - 1) + distToCenter;
+};
