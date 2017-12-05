@@ -67,3 +67,78 @@ const go = (n) => {
 	// 4. distance to the middle is that + ring #
 	return (ring - 1) + distToCenter;
 };
+
+// ---------- Part 2 ------------ //
+// This one I'm just going to brute force
+const pt = (x, y) => ({ x, y });
+const ptToKey = ({ x, y }) => `${x},${y}`;
+const vAdd = (a, b) => pt(a.x + b.x, a.y + b.y);
+
+// Directions
+const R = pt(1, 0);
+const U = pt(0, 1);
+const D = pt(0, -1);
+const L = pt(-1, 0);
+
+// Spiral kernel
+const kStep = (dirs) => ({ dirs });
+const kernel = [
+	kStep([U, U]),
+	kStep([L, L]),
+	kStep([D, D]),
+	kStep([R, R]),
+];
+
+// Spiral runner
+const advance = (start, iteration, doStep = () => {}) => {
+	// Run the kernel for this iteration
+	let out = kernel.reduce((pos, step, j) => {
+		for (let i = 0; i < iteration; i++) {
+			step.dirs.forEach((vec, k) => {
+				// hack for base U to add UU
+				if (j === 0  && k === 1 && i === 0) return;
+				// Advance the step
+				pos = vAdd(pos, vec);
+				doStep(pos);
+			});
+		}
+		return pos;
+	}, start);
+
+	// End with a step to the right
+	out = vAdd(out, R);
+	doStep(out);
+	return out;
+};
+
+const neighbors = [
+	vAdd(U, L), U, vAdd(U, R),
+		L, 							R,
+	vAdd(D, L), D, vAdd(D, R),
+];
+const sumNeighbors = (grid, pos) => neighbors.reduce(
+	(sum, neighbor) => {
+		const val = grid[ptToKey(vAdd(pos, neighbor))];
+		return sum + (val === undefined ? 0 : val);
+	}, 0);
+
+// lets do it
+const go = (max) => {
+	let head = pt(0, 0);
+	const grid = {
+		[ptToKey(head)]: 1,
+	};
+	
+	for (let i = 0; i < 10000000; i++) {
+		head = advance(head, i, (nextPos) => {
+			const nextVal = sumNeighbors(grid, nextPos);
+			grid[ptToKey(nextPos)] = nextVal;
+			// console.debug(ptToKey(nextPos), nextVal);
+			if (nextVal > max) {
+				console.debug({ nextVal, nextPos, grid });
+				throw new Error('JUST END IT.');
+			}
+		});
+	}
+};
+go(289326);
