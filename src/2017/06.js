@@ -36,17 +36,39 @@ const findCycle = (registers) => {
 	const reg = registers.slice();
 	const states = new Set();
 	let lastKey;
-	let cycles = 0;
+	let steps = 0;
 
 	// Not garanteed to terminate...?
 	while (!states.has(lastKey)) {
-		cycles++;
+		steps++;
 		states.add(lastKey);
 		const min = findMax(reg);
 		distribute(reg, min.index);
 		lastKey = toKey(reg);
 	}
 
-	return { registers: reg, cycles };
+	return { registers: reg, steps, states };
 };
-findCycle(testInput);
+
+
+// After we find a cycle, how many until we cycle again? -- how big is that cycle?
+const findCycle2 = (registers) => {
+	const reg = registers.slice();
+	const states = {};
+	let lastKey;
+	let steps = 0;
+	
+	// Not garanteed to terminate...?
+	while (states[lastKey] === undefined) {
+		states[lastKey] = steps;
+		const min = findMax(reg);
+		distribute(reg, min.index);
+		steps++;
+		lastKey = toKey(reg);
+	}
+	
+	return { registers: reg, steps, states };
+};
+
+
+const cycleSize = (results) => results.steps - results.states[toKey(results.registers)];
