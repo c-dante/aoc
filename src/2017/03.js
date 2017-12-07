@@ -96,7 +96,7 @@ const advance = (start, iteration, doStep = () => {}) => {
 		for (let i = 0; i < iteration; i++) {
 			step.dirs.forEach((vec, k) => {
 				// hack for base U to add UU
-				if (j === 0  && k === 1 && i === 0) return;
+				if (j === 0 && k === 1 && i === 0) return;
 				// Advance the step
 				pos = vAdd(pos, vec);
 				doStep(pos);
@@ -113,7 +113,7 @@ const advance = (start, iteration, doStep = () => {}) => {
 
 const neighbors = [
 	vAdd(U, L), U, vAdd(U, R),
-		L, 							R,
+	L, 							R,
 	vAdd(D, L), D, vAdd(D, R),
 ];
 const sumNeighbors = (grid, pos) => neighbors.reduce(
