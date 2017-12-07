@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const testInput = `
 pbga (66)
 xhth (57)

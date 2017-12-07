@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // input from puzzle
 const problemInput = `5	1	10	0	1	7	13	14	3	12	8	10	7	12	0	6`;
 
@@ -57,7 +59,7 @@ const findCycle2 = (registers) => {
 	const states = {};
 	let lastKey;
 	let steps = 0;
-	
+
 	// Not garanteed to terminate...?
 	while (states[lastKey] === undefined) {
 		states[lastKey] = steps;
@@ -66,7 +68,7 @@ const findCycle2 = (registers) => {
 		steps++;
 		lastKey = toKey(reg);
 	}
-	
+
 	return { registers: reg, steps, states };
 };
 

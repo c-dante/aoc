@@ -1,4 +1,4 @@
-rmhcw (26)
+export default `rmhcw (26)
 dmmriu (61)
 zjyaaoc (89) -> khekb, lywwhf
 kjgaib (385)
@@ -1413,4 +1413,4 @@ iqjhw (119) -> kwqnczk, ffulcj
 yrudtf (30)
 tnuvco (67) -> jkqctlo, jborbs
 kyshwy (60)
-baomcxj (54)
+baomcxj (54)`;

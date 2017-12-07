@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Part 1: convert a number to its (x, y) position on the grid
 // The distance from "center" is Abs(x) + Abs(y)
 // "edge sizes" are odds -- 1, 3, 5, 7, 9, .../
@@ -54,16 +56,16 @@ const centersOfRing = (ring) => {
 const go = (n) => {
 	// 1. find its ring
 	const { ring } = findRingSize(n);
-	
+
 	// 2. get that ring's centers
 	const centers = centersOfRing(ring);
-	
+
 	// 3. get the distance to the closest center
 	const distToCenter = centers.reduce(
 		(minD, center) => Math.min(minD, Math.abs(n - center)),
 		Number.POSITIVE_INFINITY
 	);
-	
+
 	// 4. distance to the middle is that + ring #
 	return (ring - 1) + distToCenter;
 };
@@ -128,7 +130,7 @@ const go = (max) => {
 	const grid = {
 		[ptToKey(head)]: 1,
 	};
-	
+
 	for (let i = 0; i < 10000000; i++) {
 		head = advance(head, i, (nextPos) => {
 			const nextVal = sumNeighbors(grid, nextPos);

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const blockToLines = block => block.split('\n');
 const lineToTokens = line => line.split(' ');
 const validatePassphrase = tokens => (new Set(tokens)).size === tokens.length;

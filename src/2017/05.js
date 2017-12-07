@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const jumpPc = adjuster => (strip, idx = 0) => {
 	let steps = 0;
 	while (idx >= 0 && idx < strip.length) {

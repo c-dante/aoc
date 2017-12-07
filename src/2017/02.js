@@ -1,3 +1,4 @@
+/* eslint-disable */
 const go = input => input.split("\n").map(
 	line => line.split(/\s/).reduce(
 		(acc, x) => [Math.min(acc[0], +x), Math.max(acc[1], +x)],
