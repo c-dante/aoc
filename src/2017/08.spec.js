@@ -13,7 +13,7 @@ describe('--- Day 8: I Heard You Like Registers ---', () => {
 			const pgm = src.parseInput(testInput);
 			assert.equal(src.part1(pgm), 1);
 		});
-		
+
 		it('should work for problem input', () => {
 			const pgm = src.parseInput(problemInput);
 			assert.equal(src.part1(pgm), 3880);
@@ -21,8 +21,14 @@ describe('--- Day 8: I Heard You Like Registers ---', () => {
 	});
 	
 	describe('Part 2', () => {
-		it('should work for test data');
+		it('should work for test data', () => {
+			const pgm = src.parseInput(testInput);
+			assert.equal(src.part2(pgm), 10);
+		});
 
-		it('should work for problem input');
+		it('should work for problem input', () => {
+			const pgm = src.parseInput(problemInput);
+			assert.equal(src.part2(pgm), 5035);
+		});
 	});
 })

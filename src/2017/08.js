@@ -7,8 +7,14 @@ const log = x => {
 
 const bindExec = (register, cmd, amount) => {
 	switch (cmd) {
-		case 'inc': return pgm => pgm.registers[register] += amount;
-		case 'dec': return pgm => pgm.registers[register] -= amount;
+		case 'inc': return pgm => {
+			pgm.registers[register] += amount;
+			return pgm.registers[register];
+		};
+		case 'dec': return pgm => {
+			pgm.registers[register] -= amount;
+			return pgm.registers[register];
+		};
 		default: throw new Error(`Unknown exec: ${cmd}`);
 	}
 };
@@ -36,13 +42,12 @@ const command = (exec, cond) => ({ exec, cond });
  * @typedef {Object} Program
  * @prop {Object<String, Number>} registers
  * @prop {Command[]} cmds - Commands of the program
- * @prop {Number} ic - Instruction counter
+ * @prop {Number} maxEver - Highest register value during exec
  */
 const program = ({
 	registers = {},
 	cmds = [],
-	ic = 0,
-} = {}) => ({ registers, cmds, ic });
+} = {}) => ({ registers, cmds, maxEver: Number.NEGATIVE_INFINITY });
 
 /**
  * @param {String} input
@@ -52,7 +57,8 @@ export const parseInput = fp.flow(
 	// Split to lines
 	fp.split('\n'),
 	fp.filter(fp.identity),
-	fp.reduce((pgm, line) => {
+	// Not curried because I want a new program each time
+	x => fp.reduce((pgm, line) => {
 		// Parse the line
 		const [,
 			execReg, execCmd, execAmount,
@@ -69,8 +75,15 @@ export const parseInput = fp.flow(
 		pgm.registers[execReg] = 0;
 		pgm.registers[condReg] = 0;
 		return pgm;
-	}, program()),
+	}, program(), x),
 );
+
+const runProgram = x => x.cmds.reduce((pgm, cmd) => {
+	if (cmd.cond(pgm)) {
+		pgm.maxEver = Math.max(pgm.maxEver, cmd.exec(pgm));
+	}
+	return pgm;
+}, x);
 
 /**
  * Run a program at a given instruction
@@ -79,15 +92,20 @@ export const parseInput = fp.flow(
  * @returns {Number}
  */
 export const part1 = fp.flow(
-	x => x.cmds.reduce((pgm, cmd) => {
-		// log(pgm,cmd.cond(pgm));
-		if (cmd.cond(pgm)) {
-			cmd.exec(pgm);
-		}
-		return pgm;
-	}, x),
+	runProgram,
 	fp.get('registers'),
 	fp.toPairs,
 	fp.maxBy(fp.get(1)),
 	fp.get(1)
 );
+
+/**
+ * Run a program at a given instruction
+ * and return the highest value EVER
+ * @param {Program} pgm 
+ * @returns {Number}
+ */
+export const part2 = fp.flow(
+	runProgram,
+	fp.get('maxEver')
+)
