@@ -32,11 +32,6 @@ export const parseInput = fp.flow(
 	})
 );
 
-const log = x => {
-	console.log(x);
-	return x;
-}
-
 /**
  * Given a list of nodes, returns a mapping of child name -> parent name
  * @param {Node[]} nodes
