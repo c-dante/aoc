@@ -1,10 +1,5 @@
 import fp from 'lodash/fp';
 
-const log = x => {
-	console.log(x);
-	return x;
-};
-
 const bindExec = (register, cmd, amount) => {
 	switch (cmd) {
 		case 'inc': return pgm => {
@@ -62,8 +57,8 @@ export const parseInput = fp.flow(
 		// Parse the line
 		const [,
 			execReg, execCmd, execAmount,
-			condReg, condCmd, condAmount
-		] = /(\w+)\s+(\w+)\s(\-?\d+)\s+if\s+(\w+)\s+([!><=]+)\s+(\-?\d+)/.exec(line).map(fp.trim);
+			condReg, condCmd, condAmount,
+		] = /(\w+)\s+(\w+)\s(-?\d+)\s+if\s+(\w+)\s+([!><=]+)\s+(-?\d+)/.exec(line).map(fp.trim);
 
 		// Insert the command
 		pgm.cmds.push(command(

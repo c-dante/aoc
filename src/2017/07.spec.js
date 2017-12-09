@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import * as src from './07';
 import problemInput from './07.data';
-import { parseInput } from './07';
 
 const testInput = `pbga (66)
 xhth (57)
@@ -32,7 +31,7 @@ describe('--- Day 7: Recursive Circus ---', () => {
 	
 	describe('Part 2', () => {
 		it('should work for test data', () => {
-			const nodes = parseInput(testInput);
+			const nodes = src.parseInput(testInput);
 			assert.deepEqual(src.part2(nodes), {
 				name: 'ugml',
 				oldWeight: 68,
@@ -41,7 +40,7 @@ describe('--- Day 7: Recursive Circus ---', () => {
 		});
 
 		it('should work for problem input', () => {
-			const nodes = parseInput(problemInput);
+			const nodes = src.parseInput(problemInput);
 			assert.deepEqual(src.part2(nodes), {
 				name: 'cumah',
 				oldWeight: 1069,
