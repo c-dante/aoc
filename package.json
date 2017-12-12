@@ -7,7 +7,7 @@
     "aws-deploy": "aws s3 sync --acl public-read --delete ./bin",
     "linter": "./node_modules/eslint/bin/eslint.js --fix src/ test/",
     "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --progress",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --require ./test/testHelper.js ./src/**/*.spec.js",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --require ./test/testHelper.js ./src/**/*.spec.js -s 0",
     "precommit": "npm run linter"
   },
   "dependencies": {},
