@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 // Part 1: convert a number to its (x, y) position on the grid
 // The distance from "center" is Abs(x) + Abs(y)
 // "edge sizes" are odds -- 1, 3, 5, 7, 9, .../
@@ -53,7 +51,7 @@ const centersOfRing = (ring) => {
 
 // Now the rest:
 // Given a number:
-const go = (n) => {
+export const part1 = (n) => {
 	// 1. find its ring
 	const { ring } = findRingSize(n);
 
@@ -100,7 +98,7 @@ const advance = (start, iteration, doStep = () => {}) => {
 				// hack for base U to add UU
 				if (j === 0 && k === 1 && i === 0) return;
 				// Advance the step
-				pos = vAdd(pos, vec);
+				pos = vAdd(pos, vec); // eslint-disable-line no-param-reassign
 				doStep(pos);
 			});
 		}
@@ -125,22 +123,23 @@ const sumNeighbors = (grid, pos) => neighbors.reduce(
 	}, 0);
 
 // lets do it
-const go = (max) => {
+export const part2 = (max) => {
 	let head = pt(0, 0);
 	const grid = {
 		[ptToKey(head)]: 1,
 	};
 
-	for (let i = 0; i < 10000000; i++) {
-		head = advance(head, i, (nextPos) => {
-			const nextVal = sumNeighbors(grid, nextPos);
-			grid[ptToKey(nextPos)] = nextVal;
-			// console.debug(ptToKey(nextPos), nextVal);
-			if (nextVal > max) {
-				console.debug({ nextVal, nextPos, grid });
-				throw new Error('JUST END IT.');
-			}
-		});
+	try {
+		for (let i = 0; i < 10000000; i++) {
+			head = advance(head, i, (nextPos) => {
+				const nextVal = sumNeighbors(grid, nextPos);
+				grid[ptToKey(nextPos)] = nextVal;
+				if (nextVal > max) {
+					throw { nextVal, nextPos, grid };
+				}
+			});
+		}
+	} catch (out) {
+		return out;
 	}
 };
-go(289326);
