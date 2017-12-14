@@ -1,15 +1,3 @@
-/* eslint-disable */
-
-// input from puzzle
-const problemInput = `5	1	10	0	1	7	13	14	3	12	8	10	7	12	0	6`;
-
-// Test data:
-const testInput = [0, 2, 7, 0];
-const testExpected = [2, 4, 1, 2];
-
-const parseInput = input => input.split(/\s/).map(x => +x);
-
-
 // Part 1
 // const registers = parseInput(problemInput);
 const getIdx = (registers, i) => i % registers.length;
@@ -34,7 +22,7 @@ const findMax = (registers) => registers.reduce(
 	{ max: Number.NEGATIVE_INFINITY, index: -1 }
 );
 
-const findCycle = (registers) => {
+export const part1 = (registers) => {
 	const reg = registers.slice();
 	const states = new Set();
 	let lastKey;
@@ -74,3 +62,5 @@ const findCycle2 = (registers) => {
 
 
 const cycleSize = (results) => results.steps - results.states[toKey(results.registers)];
+
+export const part2 = input => cycleSize(findCycle2(input));
